@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CodersAcademy.API.Repository;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CodersAcademy.API.Controllers
@@ -11,13 +8,17 @@ namespace CodersAcademy.API.Controllers
     [ApiController]
     public class AlbumController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult GetAlbuns()
+        private AlbumRepository Repository { get; init; }
+
+        public AlbumController(AlbumRepository repository)
         {
-            return Ok(new
-            {
-                Message = "Primeira API Criada"
-            });
+            this.Repository = repository;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAlbuns()
+        {
+            return Ok(await this.Repository.GetAllAsync());
         }
     }
 }
