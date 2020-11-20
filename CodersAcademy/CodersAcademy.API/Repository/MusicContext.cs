@@ -1,6 +1,7 @@
 ﻿using CodersAcademy.API.Model;
 using CodersAcademy.API.Repository.Mapping;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace CodersAcademy.API.Repository
 {
@@ -8,7 +9,9 @@ namespace CodersAcademy.API.Repository
     {
         public DbSet<Album> Albums { get; set; }
 
-        public MusicContext(DbContextOptions<MusicContext> options): base(options)
+
+
+        public MusicContext(DbContextOptions<MusicContext> options) : base(options)
         {
 
         }
@@ -20,5 +23,14 @@ namespace CodersAcademy.API.Repository
 
             base.OnModelCreating(modelBuilder);
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            ILoggerFactory Logger = LoggerFactory.Create(x => x.AddConsole());
+            optionsBuilder.UseLoggerFactory(Logger);
+
+            base.OnConfiguring(optionsBuilder);
+        }
+
     }
 }

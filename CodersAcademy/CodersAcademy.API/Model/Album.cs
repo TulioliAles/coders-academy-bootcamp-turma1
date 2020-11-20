@@ -6,7 +6,6 @@ namespace CodersAcademy.API.Model
     public class Album
     {
         public Guid Id { get; set; }
-
         public String Name { get; set; }
         public String Description { get; set; }
         public String Backdrop { get; set; }
