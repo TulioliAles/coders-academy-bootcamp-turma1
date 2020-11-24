@@ -8,6 +8,7 @@ namespace CodersAcademy.API.ViewModel.Request
         [Required]
         public String Name { get; set; }
 
+        [Required]
         public int Duration { get; set; }
     }
 }

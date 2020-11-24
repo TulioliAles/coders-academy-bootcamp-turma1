@@ -11,6 +11,7 @@ namespace CodersAcademy.API.Repository.Mapping
             builder.ToTable("UserFavoriteMusic");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
+            builder.Property(x => x.MusicId);
 
             builder.HasOne(x => x.Music).WithOne().HasForeignKey<UserFavoriteMusic>(X => X.MusicId);
         }
