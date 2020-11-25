@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CodersAcademy.API.ViewModel.Response
 {
@@ -11,5 +12,7 @@ namespace CodersAcademy.API.ViewModel.Response
         public String Email { get; set; }
 
         public String Photo { get; set; }
+
+        public List<FavoriteMusicResponse> FavoriteMusics { get; set; }
     }
 }

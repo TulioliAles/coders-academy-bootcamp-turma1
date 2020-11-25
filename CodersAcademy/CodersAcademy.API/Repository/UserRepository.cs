@@ -1,5 +1,6 @@
 ﻿using CodersAcademy.API.Model;
-using System;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CodersAcademy.API.Repository
@@ -13,9 +14,20 @@ namespace CodersAcademy.API.Repository
             this.Context = context;
         }
 
-        internal Task CreateAsync(User user)
+        public async Task CreateAsync(User user)
         {
-            throw new NotImplementedException();
+            await this.Context.Users.AddAsync(user);
+            await this.Context.SaveChangesAsync();
+        }
+
+        public async Task<User> AuthenticateAsync(string email, string password)
+        {
+            return await this.Context.Users
+                                    .Include(x => x.FavoriteMusics)
+                                    .ThenInclude(x => x.Music)
+                                    .ThenInclude(x => x.Album)
+                                    .Where(x => x.Password == password && x.Email == email)
+                                    .FirstOrDefaultAsync();
         }
     }
 }

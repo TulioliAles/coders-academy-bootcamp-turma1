@@ -28,18 +28,35 @@ namespace CodersAcademy.API.Controllers
         }
 
         [HttpPost("authenticate")]
-        public async Task<IActionResult> SignIn()
-        {
-
-        }
-
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest model)
+        public async Task<IActionResult> SignIn([FromBody] SignInRequest request)
         {
             if (ModelState.IsValid == false)
                 return BadRequest(ModelState);
 
-            var user = this.Mapper.Map<User>(Request);
+            var password = Convert.ToBase64String(Encoding.UTF8.GetBytes(request.Password));
+
+            var user = await this.UserRepository.AuthenticateAsync(request.Email, password);
+
+            if (user == null)
+            {
+                return UnprocessableEntity(new
+                {
+                    Message = "Email/Senha inválidos"
+                });
+            }
+
+            var result = this.Mapper.Map<UserResponse>(user);
+
+            return Ok(result);
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+        {
+            if (ModelState.IsValid == false)
+                return BadRequest(ModelState);
+
+            var user = this.Mapper.Map<User>(request);
 
             user.Password = Convert.ToBase64String(Encoding.UTF8.GetBytes(user.Password));
             user.Photo = $"https://robohash.org/{Guid.NewGuid()}.png?bgset=any";
