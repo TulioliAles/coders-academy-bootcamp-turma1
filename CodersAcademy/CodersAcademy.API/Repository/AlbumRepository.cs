@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CodersAcademy.API.Repository
@@ -31,5 +32,9 @@ namespace CodersAcademy.API.Repository
             await this.Context.Albums.AddAsync(album);
             await this.Context.SaveChangesAsync(); //TEM QUE TER A CHAMADA DO SAVE CHANGES!!!!!!!!!
         }
+
+        public async Task<Music> GetMusicAsync(Guid musicId)
+            => await this.Context.Music.Where(x => x.Id == musicId).FirstOrDefaultAsync();
+
     }
 }
